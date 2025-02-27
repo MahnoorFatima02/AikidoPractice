@@ -46,7 +46,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>AikidoPracticeTracker</mainClass> <!-- Correct main class -->
+                            <mainClass>org.example.AikidoPracticeTracker</mainClass> <!-- Correct main class -->
                         </manifest>
                     </archive>
                 </configuration>
