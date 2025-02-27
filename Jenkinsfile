@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'git@github.com:MahnoorFatima02/AikidoPractice.git'
+                           git branch: 'main', url: 'git@github.com:MahnoorFatima02/AikidoPractice.git'
             }
         }
         stage('Build') {
