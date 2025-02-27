@@ -20,5 +20,17 @@ pipeline {
                 sh 'mvn test'
             }
         }
+
+        stage ('Test & Coverage'){
+            steps {
+                sh 'mvn test jacoco:report'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                    jacoco(execPattern: 'target/jacoco.exec')
+                }
+            }
+        }
     }
 }
