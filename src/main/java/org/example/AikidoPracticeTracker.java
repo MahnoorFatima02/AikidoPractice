@@ -1,14 +1,25 @@
 package org.example;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class AikidoPracticeTracker {
     private List<PracticeSession> sessions = new ArrayList<>();
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    LocalDate currentDate = LocalDate.now();
 
     public void addSession(String date, int duration) {
-        sessions.add(new PracticeSession(date, duration));
+        try {
+            LocalDate.parse(date, DATE_FORMATTER); // Validate date format
+            sessions.add(new PracticeSession(date, duration));
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+        }
     }
 
     public int getTotalPracticeTime() {
@@ -16,7 +27,26 @@ public class AikidoPracticeTracker {
     }
 
     public boolean isEligibleForGraduation() {
-        return getTotalPracticeTime() >= 100; // Assuming 100 hours required for Kyu graduation
+        if (sessions.isEmpty()) {
+            return false;
+        }
+        LocalDate firstSessionDate = LocalDate.parse(sessions.get(0).getDate(), DATE_FORMATTER);
+
+        // Extract year and month from the dates
+        int firstYear = firstSessionDate.getYear();
+        int firstMonth = firstSessionDate.getMonthValue();
+        int currentYear = currentDate.getYear();
+        int currentMonth = currentDate.getMonthValue();
+
+
+        // Calculate the number of months between the two dates
+        long monthsBetween = (currentYear - firstYear) * 12L + (currentMonth - firstMonth);
+        return monthsBetween >= 6 || sessions.size() >= 100;
+    }
+
+    // Method to set the current date for testing purposes
+    public void setCurrentDate(LocalDate currentDate) {
+        this.currentDate = currentDate;
     }
 
     public static void main(String[] args) {
@@ -60,3 +90,4 @@ public class AikidoPracticeTracker {
         }
     }
 }
+
